@@ -1,0 +1,264 @@
+body {
+    margin: auto;
+    font-family: 'Cormorant Garamond', serif;
+    background: linear-gradient(to bottom, #000000, #1a0000);
+    color: #ffffff;
+    text-align: center;
+    padding-bottom: 80px;
+}
+
+/* Headings */
+h1, h2 {
+    font-family: 'Metal Mania', cursive;
+    text-align: center;
+    color: #ff2e2e;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+h1 {
+    text-shadow: 0 0 10px red, 0 0 20px darkred;
+}
+
+/* NAVBAR */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000;
+    padding: 15px;
+    border-bottom: 2px solid gold;
+}
+
+.nav-left {
+    display: flex;
+}
+
+.nav-right {
+    display: flex;
+}
+
+.navbar a {
+    color: gold;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: red;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 60px;
+    background: radial-gradient(circle, #1a0000, #000);
+    border-bottom: 2px solid red;
+}
+
+.hero h2 {
+    text-align: center;
+    font-size: 20px;
+    color: gold;
+}
+
+
+/* BUTTONS */
+button {
+    font-family: 'Cinzel', serif;
+    padding: 10px 20px;
+    background: linear-gradient(to right, red, darkred);
+    color: white;
+    border: 1px solid gold;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: linear-gradient(to right, gold, orange);
+    color: black;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    background-color: #111;
+    color: gold;
+}
+
+td, th {
+    border: 1px solid red;
+    padding: 10px;
+    text-align: center;
+}
+
+/* MERCH ITEMS */
+.merch-item {
+    background-color: #111;
+    border: 1px solid gold;
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
+}
+
+p {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.about {
+    max-width: 900px;
+    margin: 50px auto;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid red;
+    padding: 30px;
+}
+
+/* IMAGE */
+.about-img {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    display: block;
+    border: 2px solid gold;
+}
+
+/* TEXT BLOCK */
+.about-text {
+    margin-top: 20px;
+    text-align: center;
+    line-height: 1.8;
+    font-size: 18px;
+    padding: 0 20px;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*PARAGRAPH SPACING */
+.about-text p {
+    margin-bottom: 20px;
+}
+
+.about h2 {
+    text-shadow: 0 0 10px red, 0 0 20px darkred;
+}
+
+/*SOCIAL TEXT ABOVE LINKS */
+.social-text {
+    font-family: 'Cinzel', serif;
+    color: #ff2e2e;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px red;
+    font-size: 13px;
+}
+
+.footer {
+    position: flex;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 8px;
+    background-color: #000;
+    border-top: 1px solid gold;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.socials a {
+    font-size: 13px;
+    margin: 0 8px;
+}
+
+/*MERCH GRID*/
+.merch-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 40px;
+}
+
+.merch-card {
+    background-color: #111;
+    border: 1px solid gold;
+    padding: 20px;
+    width: 220px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.merch-card img {
+    width: 100%;
+    border-bottom: 1px solid red;
+    margin-bottom: 10px;
+}
+
+.merch-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px red;
+}
+
+/* FORM CONTAINER*/
+.form-container {
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+/*INPUT FIELDS*/
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid gold;
+    background-color: #111;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+/*FORM BUTTON*/
+.form-container button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.form-container input:focus {
+    outline: none;
+    border: 1px solid red;
+    box-shadow: 0 0 8px red, 0 0 15px darkred;
+}
+
+.form-container button:hover {
+    box-shadow: 0 0 10px red, 0 0 20px darkred;
+}
+
+.form-container input:hover {
+    border-color: gold;
+    box-shadow: 0 0 6px gold;
+}
+
+.tour-search input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid gold;
+    background-color: #111;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
