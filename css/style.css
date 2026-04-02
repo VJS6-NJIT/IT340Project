@@ -53,7 +53,7 @@ h1 {
 /* HERO */
 .hero {
     text-align: center;
-    padding: 60px;
+    padding: 80px 20px;
     background: radial-gradient(circle, #1a0000, #000);
     border-bottom: 2px solid red;
 }
@@ -163,11 +163,10 @@ p {
 }
 
 .footer {
-    position: flex;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     background-color: #000;
     border-top: 1px solid gold;
     text-align: center;
@@ -261,4 +260,15 @@ p {
     color: white;
     box-sizing: border-box;
     border-radius: 4px;
+}
+
+.contianer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
