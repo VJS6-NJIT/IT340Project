@@ -11,6 +11,8 @@ const bcrypt = require("bcrypt");
 const User = require("./models/User");
 const axios = require("axios");
 
+let chatMessages = [];
+
 const app = express();
 const accessLogStream = fs.createWriteStream(
     path.join(__dirname, "logs", "access.log"),
@@ -336,6 +338,28 @@ app.post("/cart/remove", (req, res) =>{
     req.session.cart.splice(index, 1);
 
     res.redirect("/cart");
+});
+
+app.get("/community", requireLogin, (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "community.html")
+    );
+});
+
+app.get("/chat/messages", requireLogin, (req, res) => {
+    res.json(chatMessages);
+});
+
+app.post("/chat/send", requireLogin, (req, res) => {
+    const message = req.body.message.trim();
+
+    if (message) {
+        chatMessages.push({
+            username: req.session.username,
+            message: message
+        });
+    }
+    res.json({ sucess: true });
 });
 
 app.listen(3000, "0.0.0.0", () => {

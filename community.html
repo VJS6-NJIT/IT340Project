@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    </head>
+
+    <body>
+        <div class="navbar">
+            <div class="nav-left">
+                <a href="/">HOME</a>
+                <a href="/tour">TOUR DATES</a>
+                 <a href="/merch">MERCHANDISE</a>
+                 <a href="/community">COMMUNITY</a>
+            </div>
+
+            <div class="nav-right">
+                <a href="/login">LOGIN</a>
+                <a href="/register">REGISTER</a>
+                <a href="/logout">LOGOUT</a>
+            </div>
+        </div>
+
+        <div class="community-page">
+
+            <div class="chat-section">
+
+                <h1>THE ONE CHAT ROOM</h1>
+
+                <div id="chat-box" class="chat-box"></div>
+
+                <form id="chat-form">
+                    <input
+                        type="text"
+                        id="message"
+                        placeholder="Type message..."
+                        reequired
+                    >
+                    <button type="submit">SEND</button>
+                </form>
+            </div>
+
+            <div class="music-section">
+
+                <h1>NOW PLAYING</h1>
+
+                <iframe
+                style="border-radius: 12px"
+                src="https://open.spotify.com/embed/playlist/37i9dQZF1DZ06evO3zaLjb"
+                width="100%"
+                height="500"
+                frameborder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+                </iframe>
+
+            </div>
+
+        </div>
+
+        <script>
+            function loadMessages() {
+
+                fetch("/chat/messages")
+                .then(response => response.json())
+                .then(data => {
+                    const chatBox = document.getElementById("chat-box");
+
+                    chatBox.innerHTML = "";
+
+                    data.forEach(msg => {
+                        chatBox.innerHTML += `
+                            <p><strong>${msg.username}:</strong> ${msg.message}</p>
+                        `;
+                    });
+
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+            }
+
+            document.getElementById("chat-form")
+            .addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                const message = document.getElementById("message").value;
+
+                console.log("Sending:", message);
+
+                fetch("/chat/send", {
+                    method: "POST", 
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: message})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server Reply:", data);
+
+                    document.getElementById("message").value = "";
+
+                    loadMessages();
+                })
+                .catch(error => console.log(error));
+            });
+
+            loadMessages();
+
+            setInterval(loadMessages, 3000);
+
+        </script>
+
+    </body>
+
+</html>

@@ -435,3 +435,41 @@ img:hover {
 .cart-table td {
     color: white;
 }
+
+.community-page {
+    display: flex;
+    gap: 30px;
+    padding: 40px;
+}
+
+.chat-section {
+    width: 65%;
+}
+.music-section {
+    width: 35%;
+}
+
+.chat-box {
+    height: 500px;
+    overflow-y: auto;
+    background: black;
+    border: 2px solid red;
+    padding: 20px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.chat-box p {
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+#chat-form input {
+    width: 75%;
+    padding: 12px;
+    font-size: 18px;
+}
+
+#chat-form button {
+    padding: 12px 20px;
+}
