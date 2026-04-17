@@ -70,6 +70,7 @@
                 .then(data => {
                     const chatBox = document.getElementById("chat-box");
 
+                    const oldScroll = chatBox.scrollTop;
                     chatBox.innerHTML = "";
 
                     data.forEach(msg => {
@@ -110,7 +111,7 @@
 
             loadMessages();
 
-            setInterval(loadMessages, 3000);
+            setInterval(loadMessages, 1000);
 
         </script>
 
