@@ -350,7 +350,11 @@ app.get("/chat/messages", requireLogin, async (req, res) => {
         .sort({ createdAt: 1 })
         .limit(100);
 
-    res.json(messages);
+    const isAdmin = req.session.role === "Fox God";
+
+    res.json({
+        messages, isAdmin
+    });
 });
 
 app.post("/chat/send", requireLogin, async (req, res) => {
@@ -363,6 +367,23 @@ app.post("/chat/send", requireLogin, async (req, res) => {
         });
     }
     res.json({ sucess: true });
+});
+
+app.post("/chat/delete/:id", requireLogin, async (req, res) => {
+    if (req.session.role !== "Fox God") {
+        return res.status(403).send("Access Denied");
+    }
+
+    await Chat.findByIdAndDelete(req.params.id);
+
+    res.json({ success: true });
+});
+
+app.get("/check-role", requireLogin, (req, res) => {
+    res.send(`
+        Username: ${req.session.username}<br>
+        Role: ${req.session.role}
+    `);
 });
 
 app.listen(3000, "0.0.0.0", () => {

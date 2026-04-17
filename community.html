@@ -70,17 +70,29 @@
                 .then(data => {
                     const chatBox = document.getElementById("chat-box");
 
-                    const oldScroll = chatBox.scrollTop;
                     chatBox.innerHTML = "";
 
-                    data.forEach(msg => {
+                    data.messages.forEach(msg => {
+                        let deleteBtn = "";
+
+                        if (data.isAdmin) {
+                            deleteBtn = `<button onclick=""deleteMessage('${msg._id}')">DELETE</button>`;
+                        }
+
                         chatBox.innerHTML += `
-                            <p><strong>${msg.username}:</strong> ${msg.message}</p>
+                            <p><strong>${msg.username}:</strong> ${msg.message} ${deleteBtn}</p>
                         `;
                     });
 
                     chatBox.scrollTop = chatBox.scrollHeight;
                 });
+            }
+
+            function deleteMessage(id) {
+                fetch("/chat/delete/" + id, {
+                    method: "POST"
+                })
+                .then(() => loadMessages());
             }
 
             document.getElementById("chat-form")
