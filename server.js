@@ -10,8 +10,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("./models/User");
 const axios = require("axios");
-
-let chatMessages = [];
+const Chat = require("./models/Chat");
 
 const app = express();
 const accessLogStream = fs.createWriteStream(
@@ -346,15 +345,19 @@ app.get("/community", requireLogin, (req, res) => {
     );
 });
 
-app.get("/chat/messages", requireLogin, (req, res) => {
-    res.json(chatMessages);
+app.get("/chat/messages", requireLogin, async (req, res) => {
+    const messages = await Chat.find()
+        .sort({ createdAt: 1 })
+        .limit(100);
+
+    res.json(messages);
 });
 
-app.post("/chat/send", requireLogin, (req, res) => {
-    const message = req.body.message.trim();
+app.post("/chat/send", requireLogin, async (req, res) => {
+    const message = (req.body.message || "").trim();
 
     if (message) {
-        chatMessages.push({
+        await Chat.create({
             username: req.session.username,
             message: message
         });
