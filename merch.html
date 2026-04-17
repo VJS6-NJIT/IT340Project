@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BABYMETAL fan site for IT340 Project">
+    <title>Merchandise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Cinzel:wght@600&family=Cormorant+Garamond:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<script>
+    fetch("/cart/count")
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("cartBtn").innerText = `VIEW CART (${data.count})`
+    });
+</script>
+
+    <body>
+
+        <div class="navbar">
+            <div class="nav-left">
+                <a href="/">HOME</a>
+                <a href="/tour">TOUR DATES</a>
+                <a href="/merch">MERCHANDISE</a>
+            </div>
+
+            <div class="nav-right">
+                <a href="/login">LOGIN</a>
+                <a href="/register">REGISTER</a>
+                <a href="/logout">LOGOUT</a>
+            </div>
+        </div>
+
+        <div class="floating-cart">
+            <a href="/cart">
+                <button id="cartBtn">VIEW CART</button>
+            </a>
+        </div>
+
+        <div class="container">
+    
+            <h1>MERCHANDISE STORE</h1>
+
+            <img src="images/merch.jpg" width="500" alt="Merch Stand">
+
+            <hr>
+
+            <div class="merch-container">
+
+                <div class="merch-card">
+                <img src="images/MetalForth.png" alt="CD" width="250">
+                <h3>Metal Forth Album </h3>
+                <p>$19.99</p>
+                <form action="/cart/add" method="POST">
+                    <input type="hidden" name="item" value="Metal Forth Album">
+                    <input type="hidden" name="price" value="19.99">
+                    <button type="submit">ADD TO CART</button>
+                </form>
+            </div>
+
+            <div class="merch-card">
+                <img src="images/LADVD.jpg" alt="DVD" width="250">
+                <h3>BABYMETAL : LIVE AT THE INTUIT DOME DVD</h3>
+                <p>$39.99</p>
+                <form action="/cart/add" method="POST">
+                    <input type="hidden" name="item" value="BABYMETAL: LIVE AT THE INTUIT DOME">
+                    <input type="hidden" name="price" value="39.99">
+                    <button type="submit">ADD TO CART</button>
+                </form>
+            </div>
+        
+            <div class="merch-card">
+                <img src="images/kawaii.jpeg" alt="T-Shirt" width="250">
+                <h3>KxAxWxAxIxI T-SHIRT</h3>
+                <p>$29.99</p>
+                <form action="/cart/add" method="POST">
+                    <input type="hidden" name="item" value="KxAxWxAxIxI T-SHIRT">
+                    <input type="hidden" name="price" value="29.99">
+                    <button type="submit">ADD TO CART</button>
+                </form>
+            </div>
+
+            <div class="merch-card">
+                <img src="images/plush.jpg" alt="Plushie" width="250">
+                <h3>KOGITSU PLUSH KEYCHAIN</h3>
+                <p>$22.99</p>
+                <form action="/cart/add" method="POST">
+                    <input type="hidden" name="item" value="KOGITSU PLUSHIE KEYCHAIN">
+                    <input type="hidden" name="price" value="22.99">
+                    <button type="submit">ADD TO CART</button>
+                </form>
+            </div>
+
+            <div class="merch-card">
+                <img src="images/15jacket.jpg" alt="Jacket" width="250">
+                <h3>15TH NIGHT BATTLE LONG JACKET</h3>
+                <p>$94.99</p>
+                <form action="/cart/add" method="POST">
+                    <input type="hidden" name="item" value="15TH NIGHT BATTLE LONG JACKET">
+                    <input type="hidden" name="price" value="94.99">
+                    <button type="submit">ADD TO CART</button>
+                </form>
+            </div>
+
+            <div class="merch-card">
+                <img src="images/fan.jpg" alt="Fan" width="250">
+                <h3>BABYMETAL FOLDING FAN</h3>
+                <p>$14.99</p>
+                <form action="/cart/add" method="POST">
+                    <input type="hidden" name="item" value="BABYMETAL FOLDING FAN">
+                    <input type="hidden" name="price" value="14.99">
+                    <button type="submit">ADD TO CART</button>
+                </form>
+            </div>
+
+    </div>
+
+        <footer class="footer">
+            <p class="social-text">Follow the Official BABYMETAL Accounts on Social Media</p>
+
+            <div class="socials">
+                <a href="https://youtube.com/@BABYMETAL" target="_blank" rel="noopener noreferrer">YOUTUBE</a>
+                <a href="https://open.spotify.com/artist/630wzNP2OL7fl4Xl0GnMWq?si=SI6ZAfuRSIuDy_wRfHH9Bw" target="_blank" rel="noopener noreferrer">SPOTIFY</a>
+                <a href="https://instagram.com/babymetal_official" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+                <a href="https://twitter.com/BABYMETAL_JAPAN" target="_blank" rel="noopener noreferrer">TWITTER</a>
+            </div>
+
+            <p class="copyright">
+                © 2026 What Does the FOX GOD Say? | Fan Project by Vincent Steiner
+            </p>
+            <p>
+                All Copyrights of BABYMETAL and corresponding Intellectual Property belong to AMUSE Inc.  
+            </p>
+
+        </footer>
+
+    </body>
+
+</html>
