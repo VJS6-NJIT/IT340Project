@@ -19,10 +19,25 @@
                  <a href="/community">COMMUNITY</a>
             </div>
 
-            <div class="nav-right">
-                <a href="/login">LOGIN</a>
-                <a href="/register">REGISTER</a>
-                <a href="/logout">LOGOUT</a>
+            <div class="nav-right" id="nav-right">
+                <script>
+                    fetch("/session-info")
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not Logged In");
+                        return res.json();
+                    })
+                    .then(data => {
+                        document.getElementById("nav-right").innerHTML = `<span class="welcome-text">Welcome ${data.username} </span> 
+                        <a href="/logout">LOGOUT</a>`;
+                    })
+                    .catch(() => {
+                        document.getElementById("nav-right").innerHTML = `
+                        <a href="/login">LOGIN</a>
+                        <a href="/register">REGISTER</a>
+                        `;
+                    });
+                </script>
+                
             </div>
         </div>
 

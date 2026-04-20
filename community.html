@@ -124,6 +124,12 @@
             }
 
             function deleteMessage(id) {
+                const confirmDelete = confirm("Are You Sure You Would Like to Delete this Message?");
+                
+                if (!confirmDelete) {
+                    return;
+                }
+
                 fetch("/chat/delete/" + id, {
                     method: "POST"
                 })
