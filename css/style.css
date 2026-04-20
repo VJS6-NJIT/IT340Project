@@ -473,3 +473,10 @@ img:hover {
 #chat-form button {
     padding: 12px 20px;
 }
+
+.chat-time {
+    color: gold;
+    margin-right: 10px; 
+    font-size: 14px;
+    font-style: italic;
+}

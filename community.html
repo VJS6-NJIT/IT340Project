@@ -63,6 +63,20 @@
         </div>
 
         <script>
+            function timeAgo(date) {
+                const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+                if (seconds < 60) return "Just Now";
+
+                const minutes = Math.floor(seconds / 60);
+                if (minutes < 60) return minutes + "min ago";
+
+                const hours = Math.floor(minutes / 60);
+                if (hours < 24) return hours + "hrs ago";
+
+                const days = Math.floor(hours / 24);
+                return days + (days === 1 ? " day ago" : " days ago");
+            }
+
             function loadMessages() {
 
                 fetch("/chat/messages")
@@ -73,15 +87,21 @@
                     chatBox.innerHTML = "";
 
                     data.messages.forEach(msg => {
+                        const time = timeAgo(msg.createdAt);
+
                         let deleteBtn = "";
 
                         if (data.isAdmin) {
-                            deleteBtn = `<button onclick=""deleteMessage('${msg._id}')">DELETE</button>`;
+                            deleteBtn = `
+                                <button onclick= "deleteMessage('${msg._id}')">DELETE</button>`;
                         }
-
-                        chatBox.innerHTML += `
-                            <p><strong>${msg.username}:</strong> ${msg.message} ${deleteBtn}</p>
-                        `;
+                        chatBox.innerHTML += `<p>
+                            <span class= "chat-time">[${time}]</span>
+                            <stong>${msg.username}:</stong>
+                            ${msg.message}
+                            ${deleteBtn}
+                            </p>
+                            `;
                     });
 
                     chatBox.scrollTop = chatBox.scrollHeight;
