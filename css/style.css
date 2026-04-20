@@ -480,3 +480,9 @@ img:hover {
     font-size: 14px;
     font-style: italic;
 }
+
+.welcome-text {
+    margin-right: 15px;
+    font-weight: bold;
+    color: gold;
+}

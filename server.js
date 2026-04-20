@@ -386,6 +386,12 @@ app.get("/check-role", requireLogin, (req, res) => {
     `);
 });
 
+app.get("/session-info", requireLogin, (req, res) => {
+    res.json({
+        username: req.session.username
+    });
+});
+
 app.listen(3000, "0.0.0.0", () => {
     console.log("Server Running on Port 3000");
 });
