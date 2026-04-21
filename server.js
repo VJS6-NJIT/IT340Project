@@ -11,6 +11,11 @@ const bcrypt = require("bcrypt");
 const User = require("./models/User");
 const axios = require("axios");
 const Chat = require("./models/Chat");
+const mongoSanitize = require("express-mongo-sanitize");
+
+mongoose.set("strictQuery", true);
+
+mongoose.connect("mongodb://127.0.0.1:27017/BandTracker");
 
 const app = express();
 const accessLogStream = fs.createWriteStream(
@@ -45,13 +50,21 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
+app.use((req, res, next) => {
+    if (req.body) {
+        req.body = mongoSanitize.sanitize(req.body);
+    }
+    next();
+});
+                    
 app.use(express.static(__dirname));
-
 
 function requireLogin(req, res, next) {
     if (req.session.userId) {
-        next();
+        next(); 
     } else {
         res.redirect("/login");
     }
@@ -100,8 +113,8 @@ app.get("/cart/count", (req, res) => {
 app.post("/register", async (req, res) => {
     try {
         const username = req.body.username.trim();
-        const email = req.body.email.trim().toLowerCase();
-        const password = req.body.password.trim();
+        const email = String(req.body.email).trim();
+        const password = String(req.body.password);
 
         if (!username || !email || !password) {
             return res.send("All Fields Required.");
@@ -150,14 +163,14 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
     try {
-        const email = req.body.email.trim().toLowerCase();
-        const password = req.body.password.trim();
+        const email = String(req.body.email).trim();
+        const password = String(req.body.password);
 
         if (!email || !password) {
             return res.send("All Fields Required.");
         }
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: email });
 
         if (!user) {
             fs.appendFileSync(

@@ -460,7 +460,10 @@ img:hover {
 }
 
 .chat-box p {
+    padding: 10px 8px;
     margin-bottom: 12px;
+    border-bottom: 1px solid #222;
+    margin: 0;
     font-size: 18px;
 }
 
