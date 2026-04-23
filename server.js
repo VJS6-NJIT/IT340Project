@@ -201,7 +201,7 @@ app.post("/login", async (req, res) => {
             `${new Date().toISOString()} SUCCESSFUL LOGIN: ${email}\n`
         );
 
-        res.redirect("/");
+        res.redirect("Login Successful");
 
     } catch (error) {
         fs.appendFileSync(

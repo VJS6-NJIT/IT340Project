@@ -48,14 +48,15 @@
             <img src="images/join.jpeg" alt="Join The One">
 
             <div class="form-container fade-section">
-                <form action="/register" method="POST">
-                    <input type="text" name="username" placeholder="Username" required><br><br>
-                    <input type="email" name="email" placeholder="Email" required><br><br>
-                    <input type="password" name="password" placeholder="Password" required><br><br>
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+                <form action="/register" id="registerForm" method="POST">
+                    <input type="text" id="username" name="username" placeholder="Username" required><br><br>
+                    <input type="email" id="email" name="email" placeholder="Email" required><br><br>
+                    <input type="password" id="password" name="password" placeholder="Password" required><br><br>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
 
                     <button type="submit">Create Account</button>
                 </form>
+                <div id="msg"></div>
             </div>
         
         </div>
@@ -78,6 +79,36 @@
             </p>
 
         </footer>
+
+        <script>
+            document.getElementById("registerForm").addEventListener("submit", async function(e) {
+                e.preventDefault();
+
+                const username = document.getElementById("username").value;
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                const confirmPassword = document.getElementById('input[name="confirmPassword"]').value;
+                const msg = document.getElementById("msg");
+
+                const res = await fetch("/register", {
+                    method: "POST", 
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username, email, password, confirmPassword })
+                });
+
+                const text = await res.text();
+
+                if (res.ok) {
+                    msg.innerHTML = text;
+                    msg.style.color = "lime";
+                } else {
+                    msg.innerHTML = text;
+                    msg.style.color = "red";
+                }
+            });
+        </script>
 
     </body>
 
