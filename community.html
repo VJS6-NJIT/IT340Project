@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    </head>
+
+    <body>
+        <div class="navbar">
+            <div class="nav-left">
+                <a href="/">HOME</a>
+                <a href="/tour">TOUR DATES</a>
+                 <a href="/merch">MERCHANDISE</a>
+                 <a href="/community">COMMUNITY</a>
+            </div>
+
+            <div class="nav-right" id="nav-right">
+                <script>
+                    fetch("/session-info")
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not Logged In");
+                        return res.json();
+                    })
+                    .then(data => {
+                        document.getElementById("nav-right").innerHTML = `<span class="welcome-text">Welcome ${data.username} </span> 
+                        <a href="/logout">LOGOUT</a>`;
+                    })
+                    .catch(() => {
+                        document.getElementById("nav-right").innerHTML = `
+                        <a href="/login">LOGIN</a>
+                        <a href="/register">REGISTER</a>
+                        `;
+                    });
+                </script>
+                
+            </div>
+        </div>
+
+        <div class="community-page">
+
+            <div class="chat-section">
+
+                <h1>THE ONE CHAT ROOM</h1>
+
+                <div id="chat-box" class="chat-box"></div>
+
+                <form id="chat-form">
+                    <input
+                        type="text"
+                        id="message"
+                        placeholder="Type message..."
+                        reequired
+                    >
+                    <button type="submit">SEND</button>
+                </form>
+            </div>
+
+            <div class="music-section">
+
+                <h1>NOW PLAYING</h1>
+
+                <iframe
+                style="border-radius: 12px"
+                src="https://open.spotify.com/embed/playlist/37i9dQZF1DZ06evO3zaLjb"
+                width="100%"
+                height="500"
+                frameborder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+                </iframe>
+
+            </div>
+
+        </div>
+
+        <script>
+            function timeAgo(date) {
+                const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+                if (seconds < 60) return "Just Now";
+
+                const minutes = Math.floor(seconds / 60);
+                if (minutes < 60) return minutes + "min ago";
+
+                const hours = Math.floor(minutes / 60);
+                if (hours < 24) return hours + "hrs ago";
+
+                const days = Math.floor(hours / 24);
+                return days + (days === 1 ? " day ago" : " days ago");
+            }
+
+            function loadMessages() {
+
+                fetch("/chat/messages")
+                .then(response => response.json())
+                .then(data => {
+                    const chatBox = document.getElementById("chat-box");
+
+                    chatBox.innerHTML = "";
+
+                    data.messages.forEach(msg => {
+                        const time = timeAgo(msg.createdAt);
+
+                        let deleteBtn = "";
+
+                        if (data.isAdmin) {
+                            deleteBtn = `
+                                <button onclick= "deleteMessage('${msg._id}')">DELETE</button>`;
+                        }
+                        chatBox.innerHTML += `<p>
+                            <span class= "chat-time">[${time}]</span>
+                            <stong>${msg.username}:</stong>
+                            ${msg.message}
+                            ${deleteBtn}
+                            </p>
+                            `;
+                    });
+
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+            }
+
+            function deleteMessage(id) {
+                const confirmDelete = confirm("Are You Sure You Would Like to Delete this Message?");
+                
+                if (!confirmDelete) {
+                    return;
+                }
+
+                fetch("/chat/delete/" + id, {
+                    method: "POST"
+                })
+                .then(() => loadMessages());
+            }
+
+            document.getElementById("chat-form")
+            .addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                const message = document.getElementById("message").value;
+
+                console.log("Sending:", message);
+
+                fetch("/chat/send", {
+                    method: "POST", 
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: message})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server Reply:", data);
+
+                    document.getElementById("message").value = "";
+
+                    loadMessages();
+                })
+                .catch(error => console.log(error));
+            });
+
+            loadMessages();
+
+            setInterval(loadMessages, 1000);
+
+        </script>
+
+    </body>
+
+</html>

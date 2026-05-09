@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="BABYMETAL fan site for IT340 Project">
+        <title>Login</title>
+        <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Cinzel:wght@600&family=Cormorant+Garamond:wght@400&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+
+       <div class="navbar">
+            <div class="nav-left">
+                <a href="/">HOME</a>
+                <a href="/tour">TOUR DATES</a>
+                 <a href="/merch">MERCHANDISE</a>
+                 <a href="/community">COMMUNITY</a>
+            </div>
+
+            <div class="nav-right" id="nav-right">
+                <script>
+                    fetch("/session-info")
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not Logged In");
+                        return res.json();
+                    })
+                    .then(data => {
+                        document.getElementById("nav-right").innerHTML = `<span class="welcome-text">Welcome ${data.username} </span> 
+                        <a href="/logout">LOGOUT</a>`;
+                    })
+                    .catch(() => {
+                        document.getElementById("nav-right").innerHTML = `
+                        <a href="/login">LOGIN</a>
+                        <a href="/register">REGISTER</a>
+                        `;
+                    });
+                </script>
+                
+            </div>
+        </div>
+
+        <div class="container">
+        
+            <h1>THE ONE LOGIN</h1>
+
+            <img src="images/theone.png" alt="The One">
+
+            <div class="form-container">
+                <form action="/login" method="POST" id="loginForm">
+                    <input type="email" name="email" id="username" placeholder="Email" required><br><br>
+                    <input type="password" name="password" id="password" placeholder="Password" required><br><br>
+
+                    <button type="submit">Login</button>
+                </form>
+
+                <div id="msg"></div>
+
+                <p>CREATE AN ACCOUNT HERE <a href="register.html">REGISTER</a></p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p class="social-text">Follow the Official BABYMETAL Accounts on Social Media</p>
+
+            <div class="socials">
+                <a href="https://youtube.com/@BABYMETAL" target="_blank" rel="noopener noreferrer">YOUTUBE</a>
+                <a href="https://open.spotify.com/artist/630wzNP2OL7fl4Xl0GnMWq?si=SI6ZAfuRSIuDy_wRfHH9Bw" target="_blank" rel="noopener noreferrer">SPOTIFY</a>
+                <a href="https://instagram.com/babymetal_official" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+                <a href="https://twitter.com/BABYMETAL_JAPAN" target="_blank" rel="noopener noreferrer">TWITTER</a>
+            </div>
+
+            <p class="copyright">
+                © 2026 What Does the FOX GOD Say? | Fan Project by Vincent Steiner
+            </p>
+            <p>
+                All Copyrights of BABYMETAL and corresponding Intellectual Property belong to AMUSE Inc.  
+            </p>
+
+        </footer>
+
+        <script>
+        document.getElementById("loginForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const msg = document.getElementById("msg");
+
+            const res = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const text = await res.text();
+
+            if (res.ok) {
+                msg.innerHTML = text;
+                msg.style.color = "lime";
+
+                setTimeout(() => {
+                    window.location.href = "/mfa.html";
+                }, 1000);
+
+            } else {
+                msg.innerHTML = text;
+                msg.style.color = "red";
+            }
+            
+        });
+    </script>
+
+    </body>
+
+</html>

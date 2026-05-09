@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BABYMETAL fan site for IT340 Project">
+    <title>Tour Dates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Cinzel:wght@600&family=Cormorant+Garamond:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+    <body>
+
+         <div class="navbar">
+            <div class="nav-left">
+                <a href="/">HOME</a>
+                <a href="/tour">TOUR DATES</a>
+                <a href="/merch">MERCHANDISE</a>
+                <a href="/community">COMMUNITY</a>
+            </div>
+
+            <div class="nav-right" id="nav-right">
+                <script>
+                    fetch("/session-info")
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not Logged In");
+                        return res.json();
+                    })
+                    .then(data => {
+                        document.getElementById("nav-right").innerHTML = `<span class="welcome-text">Welcome ${data.username} </span> 
+                        <a href="/logout">LOGOUT</a>`;
+                    })
+                    .catch(() => {
+                        document.getElementById("nav-right").innerHTML = `
+                        <a href="/login">LOGIN</a>
+                        <a href="/register">REGISTER</a>
+                        `;
+                    });
+                </script>
+                
+            </div>
+        </div>
+
+    <div class="container">
+    
+        <h1>UPCOMING BABYMETAL SHOWS</h1>
+
+        <img src="images/Legend43.jpeg" width="500" alt="Legend 43">
+
+        <div class="tour-search">
+            <input type="text" id="searchInput" placeholder="Search for an Upcoming Show...">
+            <button onclick="searchTours()">Search</button>
+        </div>
+
+        <div class="tour-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>City</th>
+                        <th>Venue</th>
+                        <th>Tickets</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tour-list">
+                    <tr>
+                        <td colspan="4">Loading Upcoming Shows...</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <footer class="footer">
+            <p class="social-text">Follow the Official BABYMETAL Accounts on Social Media</p>
+
+            <div class="socials">
+                <a href="https://youtube.com/@BABYMETAL" target="_blank" rel="noopener noreferrer">YOUTUBE</a>
+                <a href="https://open.spotify.com/artist/630wzNP2OL7fl4Xl0GnMWq?si=SI6ZAfuRSIuDy_wRfHH9Bw" target="_blank" rel="noopener noreferrer">SPOTIFY</a>
+                <a href="https://instagram.com/babymetal_official" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+                <a href="https://twitter.com/BABYMETAL_JAPAN" target="_blank" rel="noopener noreferrer">TWITTER</a>
+            </div>
+
+            <p class="copyright">
+                © 2026 What Does the FOX GOD Say? | Fan Project by Vincent Steiner
+            </p>
+            <p>
+                All Copyrights of BABYMETAL and corresponding Intellectual Property belong to AMUSE Inc.  
+            </p>
+
+        </footer>
+
+        <script>
+            let allTours = [];
+
+            fetch("/api/tours")
+            .then(res => res.json())
+            .then(data => {
+                const events = data._embedded?.events || [];
+                allTours = events;
+
+                displayTours(events);
+            })
+            .catch(error => {
+                console.log(error);
+
+                document.getElementById("tour-list").innerHTML = `
+                    <tr>
+                        <td colspan ="4">Unable to Load Tour Dates.</td>    
+                    </tr>
+                `;
+
+            });
+
+            function displayTours(events) {
+                const tourList = document.getElementById("tour-list");
+
+                if (events.length === 0) {
+                    tourList.innerHTML = `
+                        <tr>
+                            <td colspan ="4">No Shows Found.</td>  
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tourList.innerHTML = "";
+
+                events.sort((a, b) => {
+                    const dateA = new Date(a?.dates?.start?.localDate || "2100-01-01");
+                    const dateB = new Date(b?.dates?.start?.localDate || "2100-01-01");
+                    return dateA - dateB
+                })
+
+                events.forEach(event => {
+
+                    const city = event?._embedded?.venues?.[0]?.city?.name || "TBA";
+                    const venue = event?._embedded?.venues?.[0]?.name || "TBA";
+                    const rawDate = event?.dates?.start?.localDate;
+                    const date = rawDate ? new Date(rawDate).toLocaleDateString() : "TBA";
+                    const ticketLink = event?.url || "#";
+
+                    tourList.innerHTML += `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${city}</td>
+                        <td>${venue}</td>
+                        <td>
+                            <button onclick="window.open('${ticketLink}', '_blank')">
+                                TICKETS
+                            </button>
+                        </td>
+                    </tr>
+
+                    `;
+
+                });
+            }
+
+            function searchTours() {
+                const searchValue = 
+                    document.getElementById("searchInput")
+                    .value 
+                    .toLowerCase();
+                
+                const filteredTours = allTours.filter(event => {
+
+                    const city = 
+                        event._embedded?.venues?.[0]?.city?.name?.toLowerCase() || "";
+
+                    const venue = 
+                        event._embedded?.venues?.[0]?.name?.toLowerCase() || "";
+
+                    return city.includes(searchValue) || venue.includes(searchValue);
+                });
+
+                displayTours(filteredTours);
+            }
+
+        </script>
+
+    </body>
+
+
+</html>
